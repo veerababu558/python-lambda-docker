@@ -25,7 +25,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t fastapi-lambda .
+          docker build -t fastapi-python-lambda .
 
       - name: Tag image with full ECR path
         run: |
