@@ -29,15 +29,15 @@ jobs:
 
       - name: Tag image with full ECR path
         run: |
-          docker tag fastapi-python-lambda:latest ${{ ECR_REGISTRY }}/fastapi-python-lambda:latest
+          docker tag fastapi-python-lambda:latest ${{ secrets.ECR_REGISTRY }}/fastapi-python-lambda:latest
 
       - name: Push Docker image to ECR
         run: |
-          docker push ${{ ECR_REGISTRY }}/fastapi-python-lambda:latest
+          docker push ${{ secrets.ECR_REGISTRY }}/fastapi-python-lambda:latest
 
       - name: Update Lambda function with new container image
         run: |
           aws lambda update-function-code \
             --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
-            --image-uri ${{ ECR_REGISTRY }}/fastapi-python-lambda:latest \
+            --image-uri ${{ secrets.ECR_REGISTRY }}/fastapi-python-lambda:latest \
             --region ${{ secrets.AWS_REGION }}
