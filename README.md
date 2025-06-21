@@ -41,6 +41,53 @@ This project demonstrates how to set up a complete CI/CD pipeline for a containe
  -  Enable it to test the Lambda without API Gateway
 4. Go to IAM → Create a user/role with permissions:
     
+ - Generate Access Key ID and Secret Access Key
+5. Setup GitHub Codespaces
+ - Create a GitHub repo: python-lambda-docker
+ - Open the repo in Codespaces
+ - Build the project using the pre-installed Docker environment
+ - 6. 🧱 Project Structure
+
+python-lambda-docker/
+├── app/
+│   └── main.py         # FastAPI app with /hello route
+├── requirements.txt    # fastapi + mangum
+├── Dockerfile          # AWS Lambda-compatible Docker build
+└── .github/workflows/deploy.yml # GitHub Actions CI/CD workflow
+
+7. Docker Build & Run Locally
+   From Codespaces terminal
+   docker build -t fastapi-python-lambda .
+   docker run -p 9000:8080 fastapi-python-lambda
+8. Test the Lambda-style endpoint locally from Codespaces terminal
+ curl -XPOST http://localhost:9000/2015-03-31/functions/function/invocations \
+  -H "Content-Type: application/json" \
+  -d '{
+        "version": "2.0",
+        "routeKey": "GET /hello",
+        "rawPath": "/hello",
+        "rawQueryString": "",
+        "headers": { "accept": "*/*" },
+        "requestContext": {
+            "http": {
+                "method": "GET",
+                "path": "/hello",
+                "protocol": "HTTP/1.1",
+                "sourceIp": "127.0.0.1",
+                "userAgent": "curl/7.79.1"
+            }
+        },
+        "isBase64Encoded": false
+      }'
+
+9. Commit & Push to GitHub
+  git add .
+  git commit -m "Add FastAPI Lambda with Docker working example"
+  git push origin main
+10. Manual Push to ECR (1st Time Only Initially)
+    
+11. GitHub Actions CI/CD
+    Add These Secrets in GitHub AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION, LAMBDA_FUNCTION_NAME
 
 
 
