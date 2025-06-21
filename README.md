@@ -32,21 +32,13 @@ This project demonstrates how to set up a complete CI/CD pipeline for a containe
 1. Create ECR Repository
  - Go to AWS Console → ECR → Create Repository
    Name : fastapi-python-lambda
-2. Create AWS Lambda Function
- - Go to AWS Console → Lambda → Create Function
- - Choose Container image as the deployment type
- - Provide the ECR URI (We will push the Docker image manually first)
-3. Enable Function URL
- - Go to your Lambda function → Configuration → Function URL
- -  Enable it to test the Lambda without API Gateway
-4. Go to IAM → Create a user/role with permissions:
-    
+2. Go to IAM → Create a user/role with permissions:   
  - Generate Access Key ID and Secret Access Key
-5. Setup GitHub Codespaces
+3. Setup GitHub Codespaces
  - Create a GitHub repo: python-lambda-docker
  - Open the repo in Codespaces
  - Build the project using the pre-installed Docker environment
- - 6. 🧱 Project Structure
+ -  🧱 Project Structure
 
 python-lambda-docker/
 ├── app/
@@ -55,13 +47,13 @@ python-lambda-docker/
 ├── Dockerfile          # AWS Lambda-compatible Docker build
 └── .github/workflows/deploy.yml # GitHub Actions CI/CD workflow
 
-7. Docker Build & Run Locally From Codespaces terminal
+4. Docker Build & Run Locally From Codespaces terminal
 
    docker build -t fastapi-python-lambda .
    
    docker run -p 9000:8080 fastapi-python-lambda
    
-10. Test the Lambda-style endpoint locally from Codespaces terminal
+5. Test the Lambda-style endpoint locally from Codespaces terminal
     
  curl -XPOST http://localhost:9000/2015-03-31/functions/function/invocations \
   -H "Content-Type: application/json" \
@@ -83,22 +75,29 @@ python-lambda-docker/
         "isBase64Encoded": false
       }'
 
-12. Commit & Push to GitHub
+6. Commit & Push to GitHub
   git add .
   git commit -m "Add FastAPI Lambda with Docker working example"
   git push origin main
-13. Manual Push to ECR (1st Time Only Initially)
-    
-14. GitHub Actions CI/CD
+7. Manual Push to ECR (1st Time Only Initially)    
+8. Create AWS Lambda Function
+ - Go to AWS Console → Lambda → Create Function
+ - Choose Container image as the deployment type
+ - Provide the ECR URI (We will push the Docker image manually first)
+9. Enable Function URL
+ - Go to your Lambda function → Configuration → Function URL
+ -  Enable it to test the Lambda without API Gateway
+
+10. GitHub Actions CI/CD
     Add These Secrets in GitHub AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION, LAMBDA_FUNCTION_NAME and ECR_REGISTRY.
 
-15. Workflow Trigger
+11. Workflow Trigger
 - On every push to main, the GitHub Action will:
 - Build Docker image
 - Tag and push it to ECR
 - Update the Lambda with the latest image
   
-13. Testing Deployed Lambda
+12. Testing Deployed Lambda
 - Go to Lambda → Function URL
 - Copy the URL and open in browser:
 
