@@ -3,7 +3,7 @@
 # Title 
 Building CI/CD Deployment Pipeline for Dockerized FastAPI Python Application on AWS Lambda
 
-#Overview
+# Overview
 This project demonstrates how to set up a complete CI/CD pipeline for a containerized Python FastAPI application deployed on AWS Lambda using GitHub Actions. It uses GitHub Codespaces for development and leverages AWS Elastic Container Registry (ECR) to host the container image.
 
 # Technologies Used
@@ -55,11 +55,14 @@ python-lambda-docker/
 ├── Dockerfile          # AWS Lambda-compatible Docker build
 └── .github/workflows/deploy.yml # GitHub Actions CI/CD workflow
 
-7. Docker Build & Run Locally
-   From Codespaces terminal
+7. Docker Build & Run Locally From Codespaces terminal
+
    docker build -t fastapi-python-lambda .
+   
    docker run -p 9000:8080 fastapi-python-lambda
-8. Test the Lambda-style endpoint locally from Codespaces terminal
+   
+10. Test the Lambda-style endpoint locally from Codespaces terminal
+    
  curl -XPOST http://localhost:9000/2015-03-31/functions/function/invocations \
   -H "Content-Type: application/json" \
   -d '{
@@ -80,14 +83,37 @@ python-lambda-docker/
         "isBase64Encoded": false
       }'
 
-9. Commit & Push to GitHub
+12. Commit & Push to GitHub
   git add .
   git commit -m "Add FastAPI Lambda with Docker working example"
   git push origin main
-10. Manual Push to ECR (1st Time Only Initially)
+13. Manual Push to ECR (1st Time Only Initially)
     
-11. GitHub Actions CI/CD
-    Add These Secrets in GitHub AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION, LAMBDA_FUNCTION_NAME
+14. GitHub Actions CI/CD
+    Add These Secrets in GitHub AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION, LAMBDA_FUNCTION_NAME and ECR_REGISTRY.
+
+15. Workflow Trigger
+- On every push to main, the GitHub Action will:
+- Build Docker image
+- Tag and push it to ECR
+- Update the Lambda with the latest image
+  
+13. Testing Deployed Lambda
+- Go to Lambda → Function URL
+- Copy the URL and open in browser:
+
+https://funtion url/hello
+
+We should see:
+{ "message": "Hello from FastAPI Lambda" }
+
+# Summary
+This project provides a fully automated workflow to:
+ - Develop in GitHub Codespaces
+ - Containerize a FastAPI app
+ - Push to ECR
+ - Deploy to AWS Lambda via CI/CD
+ - Test without API Gateway using Function URLs
 
 
 
